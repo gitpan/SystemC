@@ -9,7 +9,7 @@ use IO::File;
 use SystemC::Parser;
 
 print "ok 1\n";
-mkdir 'test';
+mkdir 'test_dir', 0777;
 
 ######################################################################
 package Trialparser;
@@ -63,8 +63,8 @@ package main;
 
 {
     # We'll write out all text, to make sure nothing gets dropped
-    $fh = IO::File->new (">test/test.out");
-    $fdump = IO::File->new (">test/test.parse");
+    $fh = IO::File->new (">test_dir/test.out");
+    $fdump = IO::File->new (">test_dir/test.parse");
     my $sp = Trialparser->new();
     $sp->{lastfile} = "test.sp";
     $sp->{lastline} = 1;
@@ -77,7 +77,7 @@ print "ok 2\n";
 {
     # Ok, let's make sure the right data went through
     my $f1 = wholefile ("test.sp") or die;
-    my $f2 = wholefile ("test/test.out") or die;
+    my $f2 = wholefile ("test_dir/test.out") or die;
     my @l1 = split ("\n", $f1);
     my @l2 = split ("\n", $f2);
     for (my $l=0; $l<($#l1 | $#l2); $l++) {

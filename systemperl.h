@@ -1,4 +1,4 @@
-/* $Id: systemperl.h,v 1.1 2001/03/31 19:59:15 wsnyder Exp $
+/* $Id: systemperl.h,v 1.2 2001/04/03 14:49:31 wsnyder Exp $
  ************************************************************************
  *
  * THIS MODULE IS PUBLICLY LICENSED
@@ -32,7 +32,7 @@
 /**********************************************************************/
 /* Macros */
 
-#define SP_CELL(instname,type) (instname = new type (# type))
+#define SP_CELL(instname,type) (instname = new type (# instname))
 #define SP_PIN(instname,port,net) (instname->port(net))
 
 /**********************************************************************/

@@ -1,5 +1,5 @@
 # SystemC - SystemC Perl Interface
-# $Id: Netlist.pm,v 1.8 2001/03/31 19:59:15 wsnyder Exp $
+# $Id: Netlist.pm,v 1.11 2001/04/03 19:57:18 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -31,7 +31,7 @@ use SystemC::Netlist::Subclass;
 use strict;
 use vars qw($Debug $Verbose $VERSION);
 
-$VERSION = '0.1';
+$VERSION = '0.2';
 
 ######################################################################
 #### Error Handling
@@ -125,7 +125,7 @@ sub new_file {
     my $fileref = new SystemC::Netlist::File
 	(netlist=>$self,
 	 @_);
-    defined $fileref->name or carp "%Error: No filename=> specified, stopped";
+    defined $fileref->name or carp "%Error: No name=> specified, stopped";
     $self->{_files}{$fileref->name} = $fileref;
     $fileref->basename (SystemC::Netlist::Module::modulename_from_filename($fileref->name));
     return $fileref;
@@ -158,7 +158,7 @@ __END__
 
 =pod
 
-=head1 SystemC::Netlist
+=head1 NAME
 
 SystemC::Netlist - SystemC Netlist
 
@@ -295,6 +295,10 @@ L<SystemC::Net>,
 L<SystemC::Pin>,
 L<SystemC::Port>,
 L<SystemC::Subclass>
+
+=head1 DISTRIBUTION
+
+The latest version is available from CPAN and from C<http://veripool.com/>.
 
 =head1 AUTHORS
 

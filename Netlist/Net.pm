@@ -1,5 +1,5 @@
 # SystemC - SystemC Perl Interface
-# $Id: Net.pm,v 1.3 2001/03/31 19:59:18 wsnyder Exp $
+# $Id: Net.pm,v 1.5 2001/04/03 21:26:01 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -30,7 +30,7 @@ use SystemC::Netlist::Subclass;
 	SystemC::Netlist::Subclass);
 use strict;
 
-struct ('SystemC::Netlist::Net::Struct'
+structs('SystemC::Netlist::Net::Struct'
 	=>[name     	=> '$', #'	# Name of the net
 	   filename 	=> '$', #'	# Filename this came from
 	   lineno	=> '$', #'	# Linenumber this came from
@@ -66,7 +66,7 @@ __END__
 
 =pod
 
-=head1 SystemC::Netlist::Net
+=head1 NAME
 
 SystemC::Netlist::Net - Net for a SystemC Module
 

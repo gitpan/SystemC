@@ -1,5 +1,5 @@
 %{
-/* $Id: scgrammer.y,v 1.10 2001/03/30 15:56:00 wsnyder Exp $
+/* $Id: scgrammer.y,v 1.15 2001/04/03 16:11:00 wsnyder Exp $
  ******************************************************************************
  * DESCRIPTION: SystemC bison parser
  *
@@ -74,6 +74,7 @@ int scgrammerlex() {
 
 %token		SC_MODULE
 %token<string>	SC_SIGNAL
+%token<string>	SC_INOUT_CLK
 %token<string>	SC_SIGNAL_CLK
 %token		SC_CTOR
 %token		SP_CELL
@@ -116,6 +117,7 @@ exp:		auto
 		| cell
 		| pin
 		| decl
+		| inoutck
 		| declck
 		| sp
 		| enum
@@ -138,11 +140,17 @@ pin:		SP_PIN '(' SYMBOL ',' SYMBOL vector ',' SYMBOL vector ')' ';'
 			{ scparser_call(-5,"pin",$3,$5,$6,$8,$9); }
 decl:		SC_SIGNAL '<' SYMBOL '>' SYMBOL vector ';'
 			{ scparser_call(-4,"signal",$1,$3,$5,$6); }
-declck:		SC_SIGNAL_CLK SYMBOL
+inoutck:	SC_INOUT_CLK SYMBOL
 			{
 			  {char *cp = strrchr($1,'_'); if (cp) *cp='\0';} /* Drop _clk */
 			  scparser_call(3,"signal",$1,"sc_clock",$2);
  			  free($1); free($2);}
+declck:		SC_SIGNAL_CLK SYMBOL ';'
+			{
+			  scparser_call(3,"signal",$1,"sc_clock",$2);
+ 			  free($1); free($2);}
+		| SC_SIGNAL_CLK '(' { free($1); }	// foo = sc_clk (bar)
+
 sp:		SP	{ scparser_call(1,"preproc_sp",sclextext);}
 enum:		ENUM enumSymbol '{' enumValList '}'
   			{ free (ScParserLex.enumname); }

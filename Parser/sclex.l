@@ -1,6 +1,6 @@
 %option noyywrap align never-interactive prefix="sclex"
 %{
-/* $Id: sclex.l,v 1.10 2001/03/30 19:21:37 wsnyder Exp $
+/* $Id: sclex.l,v 1.12 2001/04/03 21:26:05 wsnyder Exp $
  ******************************************************************************
  * DESCRIPTION: SystemC lexer
  * 
@@ -78,7 +78,9 @@ FLOATNUM	[0-9]+"."*[0-9]*[eE][0-9]+
 
 "sc_in_clk"	|
 "sc_out_clk"	|
-"sc_inout_clk"	{ yylval.string = strdup(yytext); return(SC_SIGNAL_CLK); }
+"sc_inout_clk"	{ yylval.string = strdup(yytext); return(SC_INOUT_CLK); }
+
+"sc_clock"	{ yylval.string = strdup(yytext); return(SC_SIGNAL_CLK); }
 
 	/* Automatic comments */
 {WHITESPACE}+"// Beginning of SystemPerl automatic".*\n	{
@@ -123,7 +125,7 @@ FLOATNUM	[0-9]+"."*[0-9]*[eE][0-9]+
 %%
 
 void sclex_ppline (const char *line) {
-    // Passed string which looks like #line {##} "{filename}"
+    /* Passed string which looks like #line {##} "{filename}" */
     if (0==strncmp ("#line",line,5)) { line += 5; }
     while (*line && isspace(*line)) line++;
 
@@ -141,7 +143,8 @@ void sclex_ppline (const char *line) {
     }
 }
 
-//###################################################################
-// Local Variables:
-// mode: C
-// End:
+/*###################################################################
+ * Local Variables:
+ * mode: C
+ * End:
+ */

@@ -1,5 +1,5 @@
 # SystemC - SystemC Perl Interface
-# $Id: Pin.pm,v 1.4 2001/03/31 19:59:18 wsnyder Exp $
+# $Id: Pin.pm,v 1.6 2001/04/03 21:26:02 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -35,7 +35,7 @@ use SystemC::Netlist::Subclass;
 	SystemC::Netlist::Subclass);
 use strict;
 
-struct ('SystemC::Netlist::Pin::Struct'
+structs('SystemC::Netlist::Pin::Struct'
 	=>[name     	=> '$', #'	# Pin connection
 	   filename 	=> '$', #'	# Filename this came from
 	   lineno	=> '$', #'	# Linenumber this came from
@@ -126,7 +126,7 @@ __END__
 
 =pod
 
-=head1 SystemC::Netlist::Pin
+=head1 NAME
 
 SystemC::Netlist::Pin - Pin on a SystemC Cell
 

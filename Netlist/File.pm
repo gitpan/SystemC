@@ -1,5 +1,5 @@
 # SystemC - SystemC Perl Interface
-# $Id: File.pm,v 1.16 2001/03/31 19:59:18 wsnyder Exp $
+# $Id: File.pm,v 1.20 2001/04/03 21:26:01 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -31,7 +31,7 @@ use SystemC::Netlist::Subclass;
 	SystemC::Netlist::Subclass);
 use strict;
 
-struct ('SystemC::Netlist::File::Struct'
+structs('SystemC::Netlist::File::Struct'
 	=>[name		=> '$', #'	# Filename this came from
 	   basename	=> '$', #'	# Basename of the file
 	   netlist	=> '$', #'	# Netlist is a member of
@@ -165,7 +165,9 @@ sub signal {
 	return $self->error ("Signal declaration outside of module definition", $net);
     }
 
-    if ($inout eq "sc_signal") {
+    if ($inout eq "sc_signal"
+	|| $inout eq "sc_clock"
+	) {
 	$modref->new_net (name=>$net,
 			  filename=>$self->filename, lineno=>$self->lineno,
 			  direction=>$inout, type=>$type, array=>$array,
@@ -294,6 +296,7 @@ sub _write_lineno {
     my $filename = shift;
     if ($gccfilename ne $filename
 	|| $gcclineno != $lineno) {
+	#push @write_newtext, "//LL '$gcclineno'  '$lineno' '$gccfilename' '$filename'\n";
 	$gcclineno = $lineno;
 	# We may not be on a empty line, if not add a CR
 	my $nl = "\n";
@@ -359,6 +362,7 @@ sub write {
 
     my $didmodule = 0;
     $didmodule = 1 if !($as_imp || $as_int);  # If in-place, skip #define
+    my $basename = $self->basename;
     foreach my $line (@{$self->text}) {
 	# [autos, filename, lineno, text]
 	# [autos, filename, lineno, function, args, ...]
@@ -373,14 +377,14 @@ sub write {
 		if ($as_imp||$as_int) {
 		    # This way, errors in the AUTOs refer to the .cpp file
 		    _write_lineno ($outlineno,$filename);
-		    $gccfilename = $filename;
 		}
 		&{$func} ($line->[4],$line->[5],$line->[6],$line->[7],$line->[8],);
-		$gcclineno = 0;
 	    } else {
 		my $text = $line->[3];
 		if (defined $text && $outputting) {
-		    if (!$didmodule && $text =~ /__MODULE__/) {
+		    $text =~ s/\b__MODULE__\b/$basename/g;
+		    if (0 && !$didmodule && $text =~ /\b__MODULE__\b/) {
+			# Has problem if __MODULE__ usage is before some includes
 			_write_print "#define __MODULE__ ",$self->basename,"\n";
 			$didmodule = 1;
 		    }
@@ -470,7 +474,7 @@ __END__
 
 =pod
 
-=head1 SystemC::Netlist::File
+=head1 NAME
 
 SystemC::Netlist::File - File containing SystemC code
 

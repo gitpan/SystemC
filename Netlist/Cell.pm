@@ -1,5 +1,5 @@
 # SystemC - SystemC Perl Interface
-# $Id: Cell.pm,v 1.7 2001/03/31 19:59:18 wsnyder Exp $
+# $Id: Cell.pm,v 1.9 2001/04/03 21:26:01 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -30,7 +30,7 @@ use SystemC::Netlist::Subclass;
 	SystemC::Netlist::Subclass);
 use strict;
 
-struct ('SystemC::Netlist::Cell::Struct'
+structs('SystemC::Netlist::Cell::Struct'
 	=>[name     	=> '$', #'	# Instantiation name
 	   filename 	=> '$', #'	# Filename this came from
 	   lineno	=> '$', #'	# Linenumber this came from
@@ -145,7 +145,7 @@ __END__
 
 =pod
 
-=head1 SystemC::Netlist::Cell
+=head1 NAME
 
 SystemC::Netlist::Cell - Instantiated cell within a SystemC Netlist
 

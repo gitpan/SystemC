@@ -1,5 +1,5 @@
 #/* SystemC.xs -- SystemC Booter  -*- Mode: C -*-
-#* $Id: Parser.xs,v 1.8 2001/03/30 13:46:01 wsnyder Exp $
+#* $Id: Parser.xs,v 1.10 2001/04/03 21:26:05 wsnyder Exp $
 #*********************************************************************
 #*
 #* Vl SystemC perl utility library
@@ -59,17 +59,6 @@ void scparser_set_line (int lineno) {
     ScParserState.LastLineno = lineno;
 }
 
-//void scparser_Linenum (void)
-//{
-//    /* Set class elements for the line and filename */
-//    HV *hv;		/* %self */
-//    SV **svp;
-//    hv = (HV*)SvRV(ScParserState.self);
-//    svp = hv_fetch (hv, "lineno", 6, 1);
-//    sv_setiv(*svp, ScParserLex.lineno);
-//    //sv_setsv(*svp, sv_new);
-//}
-
 void scparser_PrefixCat (char *text, int len)
 {
     /* Add comments and other stuff to text that we can just save for later */
@@ -95,7 +84,7 @@ void scparser_EmitPrefix (void)
 	    XPUSHs(ScParserState.self);	/* $self-> */
 	    XPUSHs(ScParserState.Prefix.SVPrefix);	/* prefix */
 	    PUTBACK;			/* make local stack pointer global */
-	    call_method ("text", G_DISCARD | G_VOID);
+	    perl_call_method ("text", G_DISCARD | G_VOID);
 	    FREETMPS;			/* free that return value */
 	    LEAVE;			/* ...and the XPUSHed "mortal" args.*/
 	}
@@ -138,7 +127,7 @@ void scparser_call (
 	}
 
 	PUTBACK;			/* make local stack pointer global */
-	call_method (method, G_DISCARD | G_VOID);
+	perl_call_method (method, G_DISCARD | G_VOID);
 	FREETMPS;			/* free that return value */
 	LEAVE;				/* ...and the XPUSHed "mortal" args.*/
     }
@@ -176,7 +165,8 @@ MODULE = SystemC::Parser  PACKAGE = SystemC::Parser
 #/**********************************************************************/
 #/* self->lineno() */
 
-int lineno (CLASS)
+int
+lineno (CLASS)
 SV *CLASS
 PROTOTYPE: $
 CODE:
@@ -188,7 +178,8 @@ OUTPUT: RETVAL
 #/**********************************************************************/
 #/* self->filename() */
 
-const char *filename (CLASS)
+const char *
+filename (CLASS)
 SV *CLASS
 PROTOTYPE: $
 CODE:
@@ -200,7 +191,8 @@ OUTPUT: RETVAL
 #/**********************************************************************/
 #/* self->read (filename) */
 
-int _read_xs (CLASS, filename, strip_autos)
+int 
+_read_xs (CLASS, filename, strip_autos)
 SV *CLASS
 char *filename
 int strip_autos

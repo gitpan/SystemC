@@ -1,5 +1,5 @@
 # SystemC - SystemC Perl Interface
-# $Id: Subclass.pm,v 1.2 2001/03/31 19:59:19 wsnyder Exp $
+# $Id: Subclass.pm,v 1.4 2001/04/03 21:26:02 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -23,10 +23,12 @@
 
 package SystemC::Netlist::Subclass;
 use Class::Struct;
-
+require Exporter;
 use strict;
 
-use vars qw($Warnings $Errors %_Error_Unlink_Files);
+use vars qw($Warnings $Errors %_Error_Unlink_Files @ISA @EXPORT);
+@ISA = qw(Exporter);
+@EXPORT = qw(structs);
 $Warnings = $Errors = 0;
 
 # Maybe in the future
@@ -75,13 +77,41 @@ END {
 }
 
 ######################################################################
+######################################################################
+######################################################################
+# DANGER WILL ROBINSON!
+# Prior to perl 5.6, Class::Struct's new didn't bless the arguments,
+# or allow parameter initialization!  We'll override it!
+
+sub structs {
+    Class::Struct::struct (@_);
+    if ($] < 5.6) {
+	# Now override what class::struct created
+	my $baseclass = $_[0];
+	(my $overclass = $baseclass) =~ s/::Struct$//;
+	eval "
+            package $overclass;
+            sub new {
+		my \$class = shift;
+		my \$self = new $baseclass;
+		bless \$self, \$class;
+		while (\@_) {
+		    my \$param = shift; my \$value = shift;
+		    eval (\"\\\$self->\$param(\\\$value);\");  # Slow, sorry.
+		}
+		return \$self;
+	    }";
+    }
+}
+
+######################################################################
 #### Package return
 1;
 __END__
 
 =pod
 
-=head1 SystemC::Netlist::Subclass
+=head1 NAME
 
 SystemC::Netlist::Subclass - Common routines for all classes
 

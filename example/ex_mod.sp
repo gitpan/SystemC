@@ -1,14 +1,14 @@
+// $Id: ex_mod.sp,v 1.1 2001/04/03 14:49:34 wsnyder Exp $
+// DESCRIPTION: SystemPerl: Example source module
 
 //error test:
 ///*AUTOSIGNAL*/
 
-SC_MODULE (mod_sub) {
-    sc_in_clk		clk;		  // **** System Inputs
-    sc_in<bool>		in;
-    sc_out<bool>	out;
-}
+#sp interface
 
-SC_MODULE (mod) {
+#include "ex_mod_sub.h"
+
+SC_MODULE (__MODULE__) {
 
     sc_in_clk		clk;		  // **** System Inputs
     sc_in<bool>		in;
@@ -23,15 +23,17 @@ SC_MODULE (mod) {
 
     SC_CTOR(__MODULE__) {
 	//====
-	SP_CELL (sub0, mod_sub);
+	SP_CELL (sub0, ex_mod_sub);
 	 SP_PIN  (sub0, out, cross);
-	 /*AUTOINST*/
+	 /*AUTOINST*/	
+
 	 //Error test:
 	 //SP_PIN  (sub0, nonexisting_error, cross);
 
 	//====
-	SP_CELL (sub1, mod_sub);
+	SP_CELL (sub1, ex_mod_sub);
 	 SP_PIN  (sub1, in, cross);
 	 /*AUTOINST*/
+
     };
-}
+};

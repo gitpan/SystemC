@@ -2,6 +2,7 @@
 
 use ExtUtils::MakeMaker;
 use Carp;
+require 5.005;
 
 sub MY::postamble {
 "
@@ -18,13 +19,13 @@ install-local: manifypods
 	cp -R blib/man* /usr/local/common/man
 
 tag:
-	cvs tag -F V\$(VERSION_SYM) .
+	cvs tag -F \$(NAME)_\$(VERSION_SYM) .
 ";
 }
 
 WriteMakefile(
 	      DISTNAME  => 'SystemC',
-	      NAME      => 'SystemC',
+	      NAME      => 'SystemC::Netlist',
 	      AUTHOR	=> 'Wilson Snyder <wsnyder@wsnyder.org>',
 	      ABSTRACT  => 'SystemC Netlist Utilities and Parsing',
 	      VERSION_FROM  => 'Netlist.pm',

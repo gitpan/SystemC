@@ -1,5 +1,5 @@
 # SystemC - SystemC Perl Interface
-# $Id: Port.pm,v 1.4 2001/03/31 19:59:19 wsnyder Exp $
+# $Id: Port.pm,v 1.6 2001/04/03 21:26:02 wsnyder Exp $
 # Author: Wilson Snyder <wsnyder@wsnyder.org>
 ######################################################################
 #
@@ -30,7 +30,7 @@ use SystemC::Netlist::Subclass;
 	SystemC::Netlist::Subclass);
 use strict;
 
-struct ('SystemC::Netlist::Port::Struct'
+structs('SystemC::Netlist::Port::Struct'
 	=>[name     	=> '$', #'	# Name of the port
 	   filename 	=> '$', #'	# Filename this came from
 	   lineno	=> '$', #'	# Linenumber this came from
@@ -59,7 +59,7 @@ __END__
 
 =pod
 
-=head1 SystemC::Netlist::Port
+=head1 NAME
 
 SystemC::Netlist::Port - Port for a SystemC Module
 

@@ -1,4 +1,4 @@
-#$Id: Parser.pm,v 1.8 2001/03/30 13:46:01 wsnyder Exp $
+#$Id: Parser.pm,v 1.9 2001/03/31 20:23:37 wsnyder Exp $
 ######################################################################
 #
 # This program is Copyright 2001 by Wilson Snyder.
@@ -195,6 +195,10 @@ stipped // Auto inserted comments.
 =head1 SEE ALSO
 
 C<SystemC::Netlist>
+
+=head1 DISTRIBUTION
+
+The latest version is available from CPAN and from C<http://veripool.com/>.
 
 =head1 AUTHORS
 
