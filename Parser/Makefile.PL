@@ -1,0 +1,26 @@
+# $Id: Makefile.PL,v 1.7 2001/03/31 18:00:35 wsnyder Exp $
+# DESCRIPTION: Perl ExtUtils: Type 'perl Makefile.PL' to create a Makefile for this package
+
+use ExtUtils::MakeMaker;
+
+sub MY::postamble {
+'
+YACC = bison
+CFLAGS += -Wall
+
+sclex.c: sclex.l  scgrammer.h scparse.h
+	${LEX} ${LEXFLAGS} -Psclex -o$@ $<
+
+scgrammer.c scgrammer.h:	scgrammer.y scparse.h
+	${YACC} ${YFLAGS} --debug --verbose -d -k $< -pscgrammer -o scgrammer.c
+
+clean::
+	-rm -rf test *.o sclex.c scgrammer.h scgrammer.c *.output
+';
+}
+
+WriteMakefile(
+              NAME => "SystemC::Parser",
+	      MYEXTLIB => 'sclex.o scgrammer.o',
+	      INC => (" -I."),
+	      );
